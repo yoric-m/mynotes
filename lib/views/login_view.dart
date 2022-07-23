@@ -71,9 +71,14 @@ class _LoginViewState extends State<LoginView> {
                         final userCredential = await FirebaseAuth.instance
                             .signInWithEmailAndPassword(
                                 email: email, password: password);
-                        devtools.log(userCredential.toString());
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, notesRoute, (route) => false);
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user?.emailVerified ?? false) {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, notesRoute, (route) => false);
+                        } else {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, verifyEmailRoute, (route) => false);
+                        }
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           await showErrorDialog(context, 'User not found');
