@@ -77,8 +77,7 @@ class _LoginViewState extends State<LoginView> {
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           await showErrorDialog(context, 'User not found');
-                        }
-                        if (e.code == 'wrong-password') {
+                        } else if (e.code == 'wrong-password') {
                           await showErrorDialog(context, 'Wrong password');
                         } else {
                           await showErrorDialog(context, 'Error: ${e.code}');
